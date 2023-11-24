@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Ragna/eclipse-workspace/DoesMySwiftBotWork/lib/jsch-0.1.55.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ragna/eclipse-workspace/DoesMySwiftBotWork/lib/SwiftBotAPI-5.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ragna/eclipse-workspace/SwiftBotGame/lib/jsch-0.1.55.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ragna/eclipse-workspace/SwiftBotGame/lib/SwiftBotAPI-5.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
