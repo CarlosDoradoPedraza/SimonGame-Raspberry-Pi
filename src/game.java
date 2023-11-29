@@ -19,65 +19,51 @@ public class game {
         
         System.out.println("Select any of the colours. A = Red, B = Blue, X = Green, Y = Yellow");
 
-     // Initialize flags to control button enabling
-        boolean enableA = false;
-        boolean enableB = false;
-        boolean enableX = false;
-        boolean enableY = false;
-
-        while (count < seqLength) {
-            // Check the current count and set the appropriate flag to enable the corresponding button
-            if (count % 4 == 0) {
-                enableA = true;
-            } else if (count % 4 == 1) {
-                enableB = true;
-            } else if (count % 4 == 2) {
-                enableX = true;
-            } else if (count % 4 == 3) {
-                enableY = true;
-            }
-
-            // Enable buttons based on the flags and capture user input when a button is pressed
-            // Wait for the respective button press before adding the color to colourSelected
-            if (enableA) {
+        try {
+            while (count < seqLength) {
                 swiftBot.enableButton(Button.A, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_LEFT, RED);
                     colourSelected.add(0);
                 });
-                enableA = false;
-            } else if (enableB) {
+                count++;
+
                 swiftBot.enableButton(Button.B, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_RIGHT, BLUE);
                     colourSelected.add(1);
                 });
-                enableB = false;
-            } else if (enableX) {
+                count++;
+
                 swiftBot.enableButton(Button.X, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_LEFT, GREEN);
                     colourSelected.add(2);
                 });
-                enableX = false;
-            } else if (enableY) {
+                count++;
+
                 swiftBot.enableButton(Button.Y, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_RIGHT, YELLOW);
                     colourSelected.add(3);
                 });
-                enableY = false;
+                count++;
             }
 
-            count++;
+            swiftBot.disableAllButtons();
+            System.out.println("All buttons are now off.");
+        } catch (Exception e) {
+            System.out.println("ERROR occurred when setting up buttons.");
+            e.printStackTrace();
         }
     }
 
-    public static void generateSequence(int seqLength, int[] red, int[] blue, int[] green, int[] yellow) throws InterruptedException {
-        if (seqLength > colourChoice.size()) {
-            colourChoice.add(rand.nextInt(4));
-        }
 
+    public static void generateSequence(int seqLength, int[] red, int[] blue, int[] green, int[] yellow) throws InterruptedException {
         try {
+            while (colourChoice.size() < seqLength) {
+                colourChoice.add(rand.nextInt(4));
+            }
+
             Underlight[] underlights = new Underlight[] {Underlight.BACK_LEFT, Underlight.BACK_RIGHT, Underlight.FRONT_LEFT, Underlight.FRONT_RIGHT};
 
-            for (int i = 0; i < seqLength; i++) {
+            for (int i = 0; i < seqLength && i < colourChoice.size(); i++) {
                 int colourPick = colourChoice.get(i);
                 switch (colourPick) {
                     case 0:
@@ -97,6 +83,8 @@ public class game {
                         Thread.sleep(DELAY_DURATION);
                         break;
                 }
+                swiftBot.disableUnderlights(); // Disable underlights after each color display
+                Thread.sleep(DELAY_DURATION); // Add a delay between colors
             }
         } catch (Exception e) {
             System.out.println("ERROR: Unable to set underlight");
@@ -105,7 +93,6 @@ public class game {
 
         System.out.println("SUCCESS: All under lights should be green");
         Thread.sleep(POST_SEQUENCE_DELAY);
-        swiftBot.disableUnderlights();
     }
     
     // Constants for delay durations
@@ -121,13 +108,18 @@ public class game {
 	
 	
     public static void main(String[] args) {
-        // Initialization of swiftBot object
-        swiftBot = new SwiftBotAPI(); 
-        
+        /// Initialization of swiftBot object
+        swiftBot = new SwiftBotAPI();
+
         // Declare variables
         int score = 0;
         int round = 1;
         boolean gameOver = false;
+
+        int initialSequenceLength = 4; // Set an initial sequence length
+        while (colourChoice.size() < initialSequenceLength) {
+            colourChoice.add(rand.nextInt(4)); // Add random colors to start the sequence
+        }
 
         while (!gameOver) {
             System.out.println("Round: " + round + ", Score: " + score);
@@ -147,8 +139,16 @@ public class game {
                 e.printStackTrace();
             }
 
+            // Check if colourSelected has enough elements for the current round
+            if (colourSelected.size() < sequenceLength) {
+                System.out.println("User input array does not have enough elements.");
+                // Handle the situation, break the loop, or perform necessary actions
+                break;
+            }
+
             // Check user input against the displayed sequence
             boolean sequenceCorrect = true;
+
             for (int i = 0; i < sequenceLength; i++) {
                 int displayedColor = colourChoice.get(i);
                 int userSelectedColor = colourSelected.get(i);
@@ -169,6 +169,7 @@ public class game {
             }
 
             round++;
+            colourSelected.clear(); 
 
             // Add a delay or perform other actions before the next round/game logic
         }
