@@ -19,38 +19,53 @@ public class game {
         
         System.out.println("Select any of the colours. A = Red, B = Blue, X = Green, Y = Yellow");
 
-        try {
-            while (count < seqLength) {
+     // Initialize flags to control button enabling
+        boolean enableA = false;
+        boolean enableB = false;
+        boolean enableX = false;
+        boolean enableY = false;
+
+        while (count < seqLength) {
+            // Check the current count and set the appropriate flag to enable the corresponding button
+            if (count % 4 == 0) {
+                enableA = true;
+            } else if (count % 4 == 1) {
+                enableB = true;
+            } else if (count % 4 == 2) {
+                enableX = true;
+            } else if (count % 4 == 3) {
+                enableY = true;
+            }
+
+            // Enable buttons based on the flags and capture user input when a button is pressed
+            // Wait for the respective button press before adding the color to colourSelected
+            if (enableA) {
                 swiftBot.enableButton(Button.A, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_LEFT, RED);
                     colourSelected.add(0);
                 });
-                count++;
-
+                enableA = false;
+            } else if (enableB) {
                 swiftBot.enableButton(Button.B, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_RIGHT, BLUE);
                     colourSelected.add(1);
                 });
-                count++;
-
+                enableB = false;
+            } else if (enableX) {
                 swiftBot.enableButton(Button.X, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_LEFT, GREEN);
                     colourSelected.add(2);
                 });
-                count++;
-
+                enableX = false;
+            } else if (enableY) {
                 swiftBot.enableButton(Button.Y, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_RIGHT, YELLOW);
                     colourSelected.add(3);
                 });
-                count++;
+                enableY = false;
             }
 
-            swiftBot.disableAllButtons();
-            System.out.println("All buttons are now off.");
-        } catch (Exception e) {
-            System.out.println("ERROR occurred when setting up buttons.");
-            e.printStackTrace();
+            count++;
         }
     }
 
@@ -107,7 +122,7 @@ public class game {
 	
     public static void main(String[] args) {
         // Initialization of swiftBot object
-        swiftBot = new SwiftBotAPI(); // Replace with actual initialization
+        swiftBot = new SwiftBotAPI(); 
         
         // Declare variables
         int score = 0;
@@ -133,6 +148,7 @@ public class game {
             }
 
             // Check user input against the displayed sequence
+            boolean sequenceCorrect = true;
             for (int i = 0; i < sequenceLength; i++) {
                 int displayedColor = colourChoice.get(i);
                 int userSelectedColor = colourSelected.get(i);
@@ -140,18 +156,21 @@ public class game {
                 if (displayedColor != userSelectedColor) {
                     System.out.println("Incorrect! Game Over.");
                     gameOver = true;
+                    sequenceCorrect = false;
                     break;
-                } else {
-                    System.out.println("Correct!");
-                    score++;
                 }
             }
-            if (!gameOver) {
+
+            if (sequenceCorrect) {
+                System.out.println("Correct!");
+                score++;
                 int newColor = rand.nextInt(4); // Generate a new random color
                 colourChoice.add(newColor); // Add the new color to the sequence
             }
-            
+
             round++;
+
+            // Add a delay or perform other actions before the next round/game logic
         }
     }
 }
