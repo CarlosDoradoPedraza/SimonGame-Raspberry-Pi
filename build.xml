@@ -2,11 +2,11 @@
 <project default="piremote" name="Build Project">
 	<property name="mainclass" value="game" />
 
-	<property name="raspberrypi" value="${ip_from_user}" />
-	<property name="user_password" value="${password_from_user}" />
+	<property name="raspberrypi" value="192.168.0.119" />
+	<property name="user_password" value="raspberry" />
 
 	<!-- Setup build properties -->
-	<property name="raspberryfolder" value="~/Java" />
+	<property name="raspberryfolder" value="~/Documents" />
 	<property name="username" value="pi" />
 	<property name="password" value="${user_password}" />
 	<property name="dir.buildfile" value="." />
