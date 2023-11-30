@@ -158,7 +158,6 @@ public class game {
                 e.printStackTrace();
             }
             
-            System.out.println("colourSelected.size() : "+colourSelected.size()+"sequenceLength : "+sequenceLength);
             // Check if colourSelected has enough elements for the current round
             if (colourSelected.size() < sequenceLength) {
                 System.out.println("User input array does not have enough elements.");
@@ -240,7 +239,6 @@ public class game {
 	                }
                 }
             }
-
         }
     }
 }
