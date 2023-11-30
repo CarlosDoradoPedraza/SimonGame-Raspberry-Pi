@@ -1,7 +1,7 @@
 import swiftbot.*;
 import java.util.Random;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 public class game {
     static Random rand = new Random();
 	static ArrayList<Integer> colourChoice = new ArrayList<>();
@@ -108,7 +108,7 @@ public class game {
             e.printStackTrace();
         }
 
-        System.out.println("SUCCESS: All under lights should be green");
+        System.out.println("Sequence completed!");
         Thread.sleep(POST_SEQUENCE_DELAY);
     }
     
@@ -128,7 +128,7 @@ public class game {
     	System.out.println("Program starts");
         /// Initialization of swiftBot object
         swiftBot = new SwiftBotAPI();
-
+        Scanner scanner = new Scanner(System.in);
         // Declare variables
         int score = 0;
         int round = 1;
@@ -157,7 +157,7 @@ public class game {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            
             System.out.println("colourSelected.size() : "+colourSelected.size()+"sequenceLength : "+sequenceLength);
             // Check if colourSelected has enough elements for the current round
             if (colourSelected.size() < sequenceLength) {
@@ -192,8 +192,55 @@ public class game {
 
             round++;
             colourSelected.clear(); 
-
             // Add a delay or perform other actions before the next round/game logic
+            
+            if (score > 0 && score % 5 == 0) {
+                System.out.println("Score is a multiple of 5!");
+                
+                String confirmation = "";
+                while (confirmation.length() == 0) {
+                	
+	                System.out.println("Do you want to quit or continue? Type 'continue' to proceed or 'quit' to quit:");
+	
+	                String userInput = scanner.nextLine();
+	
+	                if (userInput.equalsIgnoreCase("continue")) {
+	                    System.out.println("Do you want to continue? Type 'Y' to Yes or 'N' to No:");
+	
+	                    String quitInput = scanner.nextLine();
+	
+	                    if (quitInput.equalsIgnoreCase("Y")) {
+	                        System.out.println("Continuing the game...");
+	                        confirmation = "Y";
+	                    } else if (quitInput.equalsIgnoreCase("N")) {
+	                        //System.out.println("Continuing the game...");
+	                    } else {
+	                        System.out.println("Invalid input. Continuing the game...");
+	                    }
+	                } else if (userInput.equalsIgnoreCase("quit")) {
+	                    System.out.println("Do you want to quit? Type 'Y' to quit or 'N' to continue:");
+	
+	                    String quitInput = scanner.nextLine();
+	
+	                    if (quitInput.equalsIgnoreCase("Y")) {
+	                        System.out.println("See you champ!");
+	                        gameOver = true;
+	                        sequenceCorrect = false;
+	                        swiftBot.disableAllButtons();
+	                        swiftBot.disableUnderlights();
+	                        System.out.println("Round: " + round + ", Score: " + score);
+	                        confirmation = "N";
+	                    } else if (quitInput.equalsIgnoreCase("N")) {
+	                        //System.out.println("Continuing the game...");
+	                    } else {
+	                        System.out.println("Invalid input. Continuing the game...");
+	                    }
+	                } else {
+	                    System.out.println("Invalid input. Continuing the game...");
+	                }
+                }
+            }
+
         }
     }
 }
