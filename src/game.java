@@ -20,7 +20,9 @@ public class game {
         System.out.println("Select any of the colours. A = Red, B = Blue, X = Green, Y = Yellow");
 
         try {
+        	long endtime = System.currentTimeMillis() + 5_000;
             while (count < seqLength) {
+            	
                 swiftBot.enableButton(Button.A, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_LEFT, RED);
                     colourSelected.add(0);
@@ -44,6 +46,9 @@ public class game {
                     colourSelected.add(3);
                 });
                 count++;
+            }
+            while(System.currentTimeMillis() < endtime){
+                ; // This while loop does nothing for 10 seconds.
             }
 
             swiftBot.disableAllButtons();
@@ -101,9 +106,9 @@ public class game {
 
     // Constants for colors
     private static final int[] RED = new int[] {255, 0, 0};
-    private static final int[] BLUE = new int[] {0, 0, 255};
-    private static final int[] GREEN = new int[] {0, 255, 0};
-    private static final int[] YELLOW = new int[] {255, 255, 0};
+    private static final int[] BLUE = new int[] {0, 255, 0};
+    private static final int[] GREEN = new int[] {0, 0, 255};
+    private static final int[] YELLOW = new int[] {255, 0, 255};
     
 	
 	
@@ -121,6 +126,7 @@ public class game {
             colourChoice.add(rand.nextInt(4)); // Add random colors to start the sequence
         }
 
+        colourChoice.clear();
         while (!gameOver) {
             System.out.println("Round: " + round + ", Score: " + score);
 
