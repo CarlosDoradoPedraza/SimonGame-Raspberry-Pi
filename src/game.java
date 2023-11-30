@@ -27,24 +27,28 @@ public class game {
                 swiftBot.enableButton(Button.A, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_LEFT, RED);
                     colourSelected.add(0);
+                    swiftBot.disableUnderlights();
                 });
                 //count++;
 
                 swiftBot.enableButton(Button.B, () -> {
                     swiftBot.setUnderlight(Underlight.BACK_RIGHT, BLUE);
                     colourSelected.add(1);
+                    swiftBot.disableUnderlights();
                 });
                 //count++;
 
                 swiftBot.enableButton(Button.X, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_LEFT, GREEN);
                     colourSelected.add(2);
+                    swiftBot.disableUnderlights();
                 });
                 //count++;
 
                 swiftBot.enableButton(Button.Y, () -> {
                     swiftBot.setUnderlight(Underlight.FRONT_RIGHT, YELLOW);
                     colourSelected.add(3);
+                    swiftBot.disableUnderlights();
                 });
                 //count++;
            // }
